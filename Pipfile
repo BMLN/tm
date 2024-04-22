@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "*"
+lda = "*"
+scikit-learn = "*"
+argparse = "*"
+gensim = "*"
+scipy = "==1.10.1"
+numpy = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
