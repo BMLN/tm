@@ -1,0 +1,2 @@
+- [ ] data mapping: input -> topic
+- [ ] write corresponding correct csv

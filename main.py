@@ -10,7 +10,7 @@ import src.nlp as nlp
 def read(path):
     match(path.split(".")[-1]):
         case "csv":
-            return pd.read_csv(path) #encoding = "ISO-8859-1"
+            return pd.read_csv(path, encoding = "ISO-8859-1")
         case "json":
             return pd.read_json(path)
         case _:
@@ -47,11 +47,11 @@ if __name__ == "__main__":
         exit()
 
     if args["de"]:
-        if os.exists(args["de_out"]):
+        if os.path.exists(args["de_out"]):
             exit(str("file already exists:", args["de_out"]))
     
     if args["en"]:
-        if os.exists(args["en_out"]):
+        if os.path.exists(args["en_out"]):
             exit(str("file already exists:", args["en_out"]))
     
 
@@ -71,12 +71,10 @@ if __name__ == "__main__":
         else:
             exit( str("couldn't read file '", x, "'") )
 
-    data = pd.DataFrame({"text": pd.concat(data)}).iloc[:2]
-
+    data = pd.DataFrame({"text": pd.concat(data)})
+    
     print("...done!")
     
-    
-
 
     #textdata preprocessing
     print("preparing textdata...")
@@ -100,19 +98,17 @@ if __name__ == "__main__":
     print("...done!")
 
 
-
-
     #lda
     print("applying lda...")
+
     if args["de"]:
         print("..for de..")
         outs_de = lda.lda_range(data_de["text"], 10, 100, 5)
     if args["en"]:
         print("..for en..")
         outs_en = lda.lda_range(data_en["text"], 10, 100, 5)
-
-
     
     print("done!")
 
     
+    #save csv + model if param

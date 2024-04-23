@@ -59,12 +59,12 @@ def lda_range(data, start, end, step):
 
     for x in range(start, end, step):
         __model = lda(__bow, __dict, x)
-        __coherence = lda_coherence(__model, data, __dict)
+        __coherence = lda_coherence(__model, data, __dict).get_coherence()
 
         #print(__coherence.get_coherence()) if new best
         if len(output) > 0 and __coherence > max([_x[1] for _x in output]):
-            print("new" , str(x)+"n model improved the score", __coherence.get_coherence())  
-        output.append((__model, __coherence.get_coherence()))
+            print("new n_topic=" + str(x), "model improved the score to", __coherence )  
+        output.append((__model, __coherence))
   
 
     return output
