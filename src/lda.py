@@ -13,7 +13,8 @@ from gensim.corpora import Dictionary
 
 #lda preprocess
 
-def lda_dict(data):
+#TODO: filter
+def lda_dict(data, filter=None):
     """
         data: df.Series of list of tokens 
 
@@ -60,8 +61,11 @@ def lda_range(data, start, end, step):
         __model = lda(__bow, __dict, x)
         __coherence = lda_coherence(__model, data, __dict)
 
-        print(__coherence.get_coherence())
+        #print(__coherence.get_coherence()) if new best
+        if len(output) > 0 and __coherence > max([_x[1] for _x in output]):
+            print("new" , str(x)+"n model improved the score", __coherence.get_coherence())  
         output.append((__model, __coherence.get_coherence()))
+  
 
     return output
 
