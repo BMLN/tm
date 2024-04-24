@@ -47,6 +47,20 @@ def lda(bow, dict, n_topics):
     )
 
 
+def lda_topics(model, data, n_top=10):
+    __dict = lda_dict(data)
+    __data = lda_bow(data, __dict)
+    topics = model.get_document_topics(__data)
+    topic_names = model.show_topics(num_topics= len(model.get_topics()), formatted=False)
+    topic_names = [ [ xx[0] for xx in x[1] ] for x in topic_names ]
+    #top_topics = mopel.top_to
+    topics = pd.Series(topics)
+    topics = topics.apply(lambda x : max(x, key=lambda item: item[1])[0])
+    topics = topics.apply(lambda x : topic_names[x])
+
+    return topics
+
+
 def lda_coherence(model, data, dict):
     return CoherenceModel(model, texts=data, dictionary=dict, coherence="c_v" )
 
@@ -58,12 +72,13 @@ def lda_range(data, start, end, step):
     __bow = lda_bow(data, __dict)
 
     for x in range(start, end, step):
+        print("...", x)
         __model = lda(__bow, __dict, x)
         __coherence = lda_coherence(__model, data, __dict).get_coherence()
 
         #print(__coherence.get_coherence()) if new best
         if len(output) > 0 and __coherence > max([_x[1] for _x in output]):
-            print("new n_topic=" + str(x), "model improved the score to", __coherence )  
+            print("n_topic=" + str(x), " improved the score to", __coherence )  
         output.append((__model, __coherence))
   
 
@@ -73,10 +88,23 @@ def lda_range(data, start, end, step):
 
 if __name__ == "__main__":
     inpt = "./input/abcnews-date-text.csv"
-    data = pd.read_csv(inpt)[:2000]
+    data = pd.read_csv(inpt)[:20]
     tokenized = data["headline_text"].apply(lambda x : x.split(" "))
 
+    __dict = lda_dict(tokenized)
+    __bow = lda_bow(tokenized, __dict)
     
-    
-    outs = lda_range(tokenized, 10, 300, 5)
-    print(outs)
+    outs = lda_range(tokenized, 10, 15, 5)
+    s = outs[0][0]
+    #tops = s.show_topics(num_topics= len(s.get_topics()) ,formatted=False)
+    #tops = [ [ xx[0] for xx in x[1] ] for x in tops ]
+    #print(tops)
+    #ts = outs[0][0].get_document_topics(__bow)
+
+    out = lda_topics(s, tokenized)
+    print(out)
+
+    #for x in ts:
+    #    print(x)
+    #t= pd.DataFrame(ts)
+    #print(outs[0][0].top_topics(__bow))

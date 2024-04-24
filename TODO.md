@@ -1,2 +1,3 @@
-- [ ] data mapping: input -> topic
-- [ ] write corresponding correct csv
+- [x] data mapping: input -> topic
+- [x] write corresponding correct csv
+- [ ] save/load model options
