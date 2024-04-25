@@ -15,6 +15,10 @@ from spacy.pipeline import Sentencizer
 
 
 
+
+ACCEPTED_POS = ["PROPN", "NOUN", "ADJ" , "VERB" ]#, "ADV", "ADP"]
+
+
 #text_string -> ||| normalize -> lemmatize -> tokenize ||| -> processed_text (prepared tokens)
 
 
@@ -78,15 +82,27 @@ def language(text_string, detector):
 #only necessary
 
 def preprocess(text_string, nlp_pipeline):
-    return [ token.lemma_ for token in nlp_pipeline(text_string) if token.is_stop == False and token.is_alpha == True ]
+    return [ token.lemma_ for token in nlp_pipeline(text_string) if token.is_stop == False and token.is_alpha == True and token.pos_ in ACCEPTED_POS ]
 
 
 
 
 
 if __name__ == "__main__":
-   t = ",Job Description , ,Zur Unterstützung im Bereich Software--Entwicklung."
+    inp = "./input/stepstone_info.csv"
+    data = pd.read_csv(inp)
+    data["textdata"] = data["raw_text"]
 
-   pip = load_langpipeline("de")
-   print(pip.pipe_names)
-   print(preprocess(t, pip))
+    detector = load_langdetector()
+    de_pipeline = load_langpipeline("de")
+
+
+    data["language"] = data["textdata"].apply(language, args=(detector,))
+
+    data["textdata"] = data["textdata"].apply(normalize)
+
+    data_de = data[ data["language"] == Language.GERMAN ]
+    data_de["textdata"] = data_de["textdata"].apply(preprocess, args=(de_pipeline,))
+
+    
+    print(data_de["textdata"][0])

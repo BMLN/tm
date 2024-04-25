@@ -1,3 +1,4 @@
 - [x] data mapping: input -> topic
 - [x] write corresponding correct csv
+- [ ] iloc topics assignments
 - [ ] save/load model options

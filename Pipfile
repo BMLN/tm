@@ -20,4 +20,4 @@ spacy-download = "*"
 python_version = "3.11"
 
 [scripts]
-gogogo = "python main.py --de --en --data ./input/d/encoded-Stepstone_jobs.csv Aufgaben Qualifikationen --data ./input/d/get-in-it_info.csv Aufgaben Qualifikationen --data ./input/d/indeed_info.csv raw_text"
+gogogo = "python src/main.py --de --en --data ./input/stepstone_info.csv raw_text --data ./input/indeed_info.csv raw_text"

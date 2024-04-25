@@ -4,9 +4,9 @@ from sys import exit
 import os
 
 import pandas as pd
-import src.lda as lda
-import src.nlp as nlp
-import src.data as data
+import lda
+import nlp
+import data
 
 def read(path):
     match(path.split(".")[-1]):
