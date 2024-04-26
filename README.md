@@ -76,8 +76,9 @@ following [1] and [2] the extraction of IS is done through topic modeling with L
 
 #### Implementation
 
-1.1. basic filtering of leftover symbols 
-1.2. & 3. & 4 applying the Spacy pipeline
+   1.1. basic filtering of leftover symbols 
+
+   1.2. & 3. & 4 applying the Spacy pipeline
 
 2. the utilized LDA package applies LDA after building a dictionary and bag of word representations for each document
 
