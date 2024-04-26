@@ -45,26 +45,47 @@ X. Processing is still inside of scraper (//text() (which isnt that great)), sub
 
 
 ### Data Extraction
--> problem definition: Company names have to be translated to job postings 
+#### -> problem definition: job postings have to be translated to topics (a group of terms)
 
 following [1] and [2] the extraction of IS is done through topic modeling with LDA
-[2] describes the procedure as the following steps: 
-1. text normalization
-2. lemmatization, 
-(3.) (n-grams, meaning NER? most likely)
-4. filtering of words with not a lot of meaning (stopwords, non relevant POS)
 
-<br> 
+1. as of any analysis on text basis, the texts have to be prepared before it might be applied
 
-5. Application of Data Analysis, in the form of LDA
+   [2] describes the procedure as the following steps: 
+      1. text normalization
+      2. lemmatization, 
+      (3.) (n-grams, meaning NER? most likely)
+      4. filtering of words with not a lot of meaning (stopwords, non relevant POS)
 
+2. LDA has to be applied to the resulting textdata
 
-
-
-
+3. a set configuration for LDA has to be determined through (quantitive?) analysis
 
 
+#### Implementation
 
+1.1. basic filtering of leftover symbols 
+1.2. & 3. & 4 applying the Spacy pipeline
+
+2. the utilized LDA package applies LDA after building a dictionary and bag of word representations for each document
+
+3. following [2], the determination for the best number of topics is selected after multiple runthroughs with different configurations in the range of x-300
+
+
+
+
+
+
+#### Visualizing the results
+
+tbd
+
+
+
+
+
+### Sources:
 
 [1]: ALIGNING IS CURRICULUM WITH INDUSTRY SKILL EXPECTATIONS: A TEXT MINING APPROACH
+
 [2]: BRIDGING THE GAP BETWEEN INDUSTRY SKILL
