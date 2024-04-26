@@ -38,7 +38,19 @@ offering an easy adjustable data collection and extraction interface (((with scr
 
 #### -> Implementation: (tbd?)
 
-1. defined scraping interfaces: mappings(not implemented yet), JobSearch, JobInfo
+with the resources available, especially python has led itself as the desired language for web scraping.
+Additionally, the use of the scrapy framework brings in many desireable features and benefits to the process            (add sources)
+
+1. We defined scraping interfaces and seperated each step in the data acquisition into its own problem, which consumes information provided (by its precessor)
+
+   for each source there will be the following scrapers:
+      - one gathering information about source specific mappings like company names and their respective ids (not implemented yet, handcoded/extracted atm)
+      - one gathering the available urls that lead to job postings of each source
+      - one extracting the as valuable determined information from each job posting
+ 
+2. with the interfaces defined and an implementation as an abstract class:
+   - some qualities are already implemented on the top level
+   - leading to each new source/scraping only demanding the source specific knowledge and implementation of the webpage and content mappings (e.g. what element will provide the location of jobposting )
 
 
 X. Processing is still inside of scraper (//text() (which isnt that great)), subject to change for a good architecture (should be then moved as an extra between DC and DE)
