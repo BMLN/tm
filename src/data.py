@@ -1,3 +1,4 @@
+from argparse import ArgumentParser
 import pandas as pd
 
 
@@ -35,16 +36,16 @@ def data(input):
 
 
 
+
 # different csvs -> 
+#TODO
 if __name__ == "__main__":
-    inp1 = "./input/d/get-in-it_info.csv"
-    inp2 = "./input/d/Stepstone_jobs.csv"
-
-    d1 = pd.read_csv(inp1, encoding = "ISO-8859-1")
-    d2 = pd.read_csv(inp2, encoding = "ISO-8859-1")
-    print(d1.columns, d2.columns)
+    arg_parser = ArgumentParser()
+    arg_parser.add_argument("--data", type=str, nargs="*", action="append", dest="inputs")
+    arg_parser.add_argument("--output", type=str, default="./output/combined.csv")
     
-    #d = d.iloc[:1][["Qualifikationen", "Aufgaben"]]
-    #print(d)
+    args = vars(arg_parser.parse_args())
 
-    print(pd.concat([d1, d2]).columns)
+    print(args)
+    output = data(args["inputs"])
+    output.to_csv(args["output"])
