@@ -108,6 +108,7 @@ if __name__ == "__main__":
 
 
     #training
+    exit()
     print("applying lda...")
 
     if args["de"]:

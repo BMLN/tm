@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "0524174cf47fc35cdc830cc58de7a059e8001fe810893a3f56d0248b09698681"
+            "sha256": "a9f029a31c516067c22f7133d1752bc48d18daecf3359fb2393f5a2d04a82a40"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,6 +31,14 @@
             ],
             "index": "pypi",
             "version": "==1.4.0"
+        },
+        "beautifulsoup4": {
+            "hashes": [
+                "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051",
+                "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"
+            ],
+            "markers": "python_full_version >= '3.6.0'",
+            "version": "==4.12.3"
         },
         "blis": {
             "hashes": [
@@ -318,6 +326,15 @@
                 "sha256:ecd12e3bacf3eed5486e4cd8ede3c12da66ee0e0a9d0ae046962bc2bb503acef"
             ],
             "version": "==2.0.8"
+        },
+        "deep-translator": {
+            "hashes": [
+                "sha256:801260c69231138707ea88a0955e484db7d40e210c9e0ae0f77372ffda5f4bf5",
+                "sha256:d635df037e23fa35d12fd42dab72a0b55c9dd19e6292009ee7207e3f30b9e60a"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.7' and python_version < '4.0'",
+            "version": "==1.11.4"
         },
         "fonttools": {
             "hashes": [
@@ -1423,6 +1440,14 @@
             "markers": "python_version >= '3.6' and python_version < '4.0'",
             "version": "==6.4.0"
         },
+        "soupsieve": {
+            "hashes": [
+                "sha256:5663d5a7b3bfaeee0bc4372e7fc48f9cff4940b3eec54a6451cc5299f1097690",
+                "sha256:eaa337ff55a1579b6549dc679565eac1e3d000563bcb1c8ab0d0fefbc0c2cdc7"
+            ],
+            "markers": "python_version >= '3.8'",
+            "version": "==2.5"
+        },
         "spacy": {
             "hashes": [
                 "sha256:023c9a008328f55c4717c56c4f8a28073b9961547f7d38a9405c967a52e66d59",
@@ -1567,11 +1592,11 @@
         },
         "threadpoolctl": {
             "hashes": [
-                "sha256:8f4c689a65b23e5ed825c8436a92b818aac005e0f3715f6a1664d7c7ee29d262",
-                "sha256:f11b491a03661d6dd7ef692dd422ab34185d982466c49c8f98c8f716b5c93196"
+                "sha256:082433502dd922bf738de0d8bcc4fdcbf0979ff44c42bd40f5af8a282f6fa107",
+                "sha256:56c1e26c150397e58c4926da8eeee87533b1e32bef131bd4bf6a2f45f3185467"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==3.4.0"
+            "version": "==3.5.0"
         },
         "tqdm": {
             "hashes": [

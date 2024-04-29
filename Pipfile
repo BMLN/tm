@@ -16,6 +16,7 @@ spacy-download = "*"
 matplotlib = "*"
 wordcloud = "*"
 parsel = "*"
+deep-translator = "*"
 
 [dev-packages]
 
@@ -24,3 +25,4 @@ python_version = "3.11"
 
 [scripts]
 gogogo = "python src/main.py --de --en --data ./input/stepstone_info.csv raw_text --data ./input/indeed_info.csv raw_text"
+lda = "pipenv run python src/lda.py --data ./input/processed_de.csv --column Qualifications_processed --benchmarks ./output/quals_benchmarks.csv --model ./output/quals_model"

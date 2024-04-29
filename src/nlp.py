@@ -1,5 +1,6 @@
 import pandas as pd
-
+import data
+from argparse import ArgumentParser
 
 #from langdetect import detect as detect_language
 from lingua import Language, LanguageDetectorBuilder
@@ -81,28 +82,69 @@ def language(text_string, detector):
 
 #only necessary
 
+#TODO: check why mwd needs extra filter
 def preprocess(text_string, nlp_pipeline):
-    return [ token.lemma_ for token in nlp_pipeline(text_string) if token.is_stop == False and token.is_alpha == True and token.pos_ in ACCEPTED_POS ]
+    return [ token.lemma_ for token in nlp_pipeline(text_string) if token.is_stop == False and token.is_alpha == True and token.pos_ in ACCEPTED_POS and token.lemma_ != "mwd"]
 
 
 
 
 
 if __name__ == "__main__":
-    inp = "./input/stepstone_info.csv"
-    data = pd.read_csv(inp)
-    data["textdata"] = data["raw_text"]
+
+
+    #args
+    arg_parser = ArgumentParser()
+
+    arg_parser.add_argument("--data", type=str, nargs="*", action="append", dest="inputs")
+
+    arg_parser.add_argument("--de", action="store_true", default=False)
+    arg_parser.add_argument("--de_out", type=str, default="./output/output_de.csv")
+    arg_parser.add_argument("--en", action="store_true", default=False)
+    arg_parser.add_argument("--en_out", type=str, default="./output/output_en.csv")
+
+    
+    args = vars(arg_parser.parse_args())
+
+    
+
+
+    
+    print("loading data...")
+
+    data = data.data(args["inputs"])
+    
+    print("...done!")
+    
+
+    #data
+    #textdata preprocessing
+    print("preparing textdata...")
 
     detector = load_langdetector()
     de_pipeline = load_langpipeline("de")
+    en_pipeline = load_langpipeline("en")
 
 
     data["language"] = data["textdata"].apply(language, args=(detector,))
 
     data["textdata"] = data["textdata"].apply(normalize)
-
-    data_de = data[ data["language"] == Language.GERMAN ]
-    data_de["textdata"] = data_de["textdata"].apply(preprocess, args=(de_pipeline,))
-
     
-    print(data_de["textdata"][0])
+    if args["de"]:
+        data_de = data[ data["language"] == Language.GERMAN ]
+        data_de["textdata"] = data_de["textdata"].apply(preprocess, args=(de_pipeline,))
+
+    if args["en"]:
+        data_en = data[ data["language"] == Language.ENGLISH ]
+        data_en["textdata"] = data_en["textdata"].apply(preprocess, args=(en_pipeline,))
+    #data["text"] = data["text"].apply(lambda x : [ nlp.normalize(token) for token in x] ) 
+
+    print("...done!")
+
+
+    print("saving...")
+    if args["de"]:
+        data_de.to_csv(args["de_out"])
+
+    if args["en"]:
+        data_en.to_csv(args["en_out"])

@@ -3,6 +3,8 @@ import pandas as pd
 from gensim.models import LdaModel, CoherenceModel
 from gensim.corpora import Dictionary
 
+import data
+from argparse import ArgumentParser
 
 
 
@@ -47,20 +49,25 @@ def lda(bow, dict, n_topics):
     )
 
 
-def lda(path):
+def lda_from(path):
     return LdaModel.load(path)
 
 
 
 
 #may include roundi9nsg
-def lda_topic_distributions(model, data):
+def lda_topic_distributions(model ,data):
     __dict = lda_dict(data)
-    __data = lda_bow(data, __dict)
-    topics = model.get_document_topics(__data)
-    topic_ids = [ x[0] for x in topics[0]] if len(topics) > 0 else []
-    topics = pd.DataFrame(topics, columns=topic_ids).apply(lambda x : x.apply(lambda y: y[1]))
-    
+    __bow = lda_bow(data, __dict)
+    topics = model.get_document_topics(__bow, minimum_probability=0.0)
+    topic_ids = [ x[0] for x in topics ] if len(topics) > 0 else []
+    #print(topics)
+    #print(topic_ids)
+    #import numpy as np
+    #print(np.shape(topics))
+
+    topics = pd.DataFrame(topics).apply(lambda x : x.apply(lambda y: y[1]))
+    #print(topics.T)
     return topics
 
 
@@ -96,7 +103,7 @@ def lda_range(data, start, end, step):
         #print(__coherence.get_coherence()) if new best
         if len(output) > 0 and __coherence > max([_x[1] for _x in output]):
             print("n_topic=" + str(x), " improved the score to", __coherence )  
-        output.append((__model, __coherence))
+        output.append((__model, __coherence, x))
   
 
     return output
@@ -104,24 +111,42 @@ def lda_range(data, start, end, step):
 
 
 if __name__ == "__main__":
-    inpt = "./input/abcnews-date-text.csv"
-    data = pd.read_csv(inpt)[:20]
-    tokenized = data["headline_text"].apply(lambda x : x.split(" "))
-
-    __dict = lda_dict(tokenized)
-    __bow = lda_bow(tokenized, __dict)
     
-    outs = lda_range(tokenized, 10, 15, 5)
-    s = outs[0][0]
-    #tops = s.show_topics(num_topics= len(s.get_topics()) ,formatted=False)
-    #tops = [ [ xx[0] for xx in x[1] ] for x in tops ]
-    #print(tops)
-    #ts = outs[0][0].get_document_topics(__bow)
 
-    out = lda_topics(s, tokenized)
-    print(out)
+    #args
+    arg_parser = ArgumentParser()
 
-    #for x in ts:
-    #    print(x)
-    #t= pd.DataFrame(ts)
-    #print(outs[0][0].top_topics(__bow))
+    arg_parser.add_argument("--data", type=str)
+    arg_parser.add_argument("--column", type=str)
+    arg_parser.add_argument("--benchmarks", type=str, default=None)
+    arg_parser.add_argument("--model", type=str, default=None)
+
+    arg_parser.add_argument("--ntopics_from", type=int, default=10)
+    arg_parser.add_argument("--ntopics_to", type=int, default=315)
+    arg_parser.add_argument("--ntopics_stepsize", type=int, default=5)
+
+
+    args = vars(arg_parser.parse_args())
+
+    import ast
+    data = pd.read_csv(args["data"])[args["column"]].apply(ast.literal_eval)
+    start, stop, step = args["ntopics_from"], args["ntopics_to"], args["ntopics_stepsize"]
+
+
+    print("applying lda...")
+
+    print(data)
+    outs = lda_range(data, start, stop, step)
+    #model_de = max(outs_de, key=lambda x : x[1])[0]
+    if args["benchmarks"] != None:
+        benchmarks = {
+            "n" : [ x[2] for x in outs ],
+            "coherence" : [ x[1] for x in outs ]
+        }
+        pd.DataFrame(benchmarks).to_csv(args["benchmarks"])
+
+    print("done!")
+
+    if args["model"] != None:
+        max(outs, key=lambda x : x[1])[0].save(args["model"])
+    
