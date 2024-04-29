@@ -47,6 +47,23 @@ def lda(bow, dict, n_topics):
     )
 
 
+def lda(path):
+    return LdaModel.load(path)
+
+
+
+
+#may include roundi9nsg
+def lda_topic_distributions(model, data):
+    __dict = lda_dict(data)
+    __data = lda_bow(data, __dict)
+    topics = model.get_document_topics(__data)
+    topic_ids = [ x[0] for x in topics[0]] if len(topics) > 0 else []
+    topics = pd.DataFrame(topics, columns=topic_ids).apply(lambda x : x.apply(lambda y: y[1]))
+    
+    return topics
+
+
 def lda_topics(model, data, n_top=10):
     __dict = lda_dict(data)
     __data = lda_bow(data, __dict)

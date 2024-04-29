@@ -13,6 +13,9 @@ numpy = "*"
 lingua-language-detector = "*"
 spacy = "*"
 spacy-download = "*"
+matplotlib = "*"
+wordcloud = "*"
+parsel = "*"
 
 [dev-packages]
 
